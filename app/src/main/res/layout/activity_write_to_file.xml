@@ -53,6 +53,7 @@
             android:id="@+id/img_result"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:background="@drawable/outline"
             android:layout_gravity="center"/>
 
         <TextView

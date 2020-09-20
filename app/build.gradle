@@ -27,14 +27,14 @@ android {
             dimension 'legacyStorageFlag'
             manifestPlaceholders = [legacyStorageFlag:"false"]
 
-            applicationIdSuffix ".off"
+            applicationIdSuffix ".legacyoff"
         }
 
         legacyOn {
             dimension 'legacyStorageFlag'
             manifestPlaceholders = [legacyStorageFlag:"true"]
 
-            applicationIdSuffix ".on"
+            applicationIdSuffix ".legacyon"
         }
     }
 

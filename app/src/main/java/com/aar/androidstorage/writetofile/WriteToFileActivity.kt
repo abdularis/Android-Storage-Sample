@@ -9,8 +9,12 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import com.aar.androidstorage.R
+import com.aar.androidstorage.asFormattedDate
+import com.aar.androidstorage.askStoragePermission
+import com.aar.androidstorage.isStoragePermissionGranted
 import kotlinx.android.synthetic.main.activity_write_to_file.*
 import java.io.*
+import java.sql.Date
 
 class WriteToFileActivity : AppCompatActivity() {
 
@@ -29,6 +33,10 @@ class WriteToFileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write_to_file)
 
+        if (!isStoragePermissionGranted()) {
+            askStoragePermission()
+        }
+
         text_info.text = "Save this image into: ${topLevelDir.absolutePath}"
 
         btn_save.setOnClickListener {
@@ -42,9 +50,9 @@ class WriteToFileActivity : AppCompatActivity() {
 
         btn_read.setOnClickListener {
             try {
-                val bmp = readFileContent("write_bitmap_sample.jpg")
-                img_result.setImageBitmap(bmp)
-                text_file.text = ""
+                val fileBitmap = readFileContent("write_bitmap_sample.jpg")
+                img_result.setImageBitmap(fileBitmap.second)
+                text_file.text = "modified: ${fileBitmap.first.lastModified().asFormattedDate()}"
             } catch (e: Exception) {
                 text_file.text = e.toString()
             }
@@ -76,9 +84,9 @@ class WriteToFileActivity : AppCompatActivity() {
         return file.absolutePath
     }
 
-    private fun readFileContent(fileName: String): Bitmap {
+    private fun readFileContent(fileName: String): Pair<File, Bitmap> {
         val file = File(topLevelDir, fileName)
-        return BitmapFactory.decodeStream(FileInputStream(file))
+        return Pair(file, BitmapFactory.decodeStream(FileInputStream(file)))
     }
 
     private fun doQueryMediaStore(): ArrayList<String> {

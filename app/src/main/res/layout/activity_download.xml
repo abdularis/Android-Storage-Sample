@@ -5,32 +5,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
-    android:clipToPadding="false"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context="com.aar.androidstorage.download.DownloadActivity">
 
     <TextView
         android:id="@+id/text_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"/>
 
     <Button
-        android:id="@+id/btn_write_file_1"
+        android:id="@+id/btn_download"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Write File (Picure)"/>
-
-    <Button
-        android:id="@+id/btn_write_file_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Write File (APP_SAMPLE_DIR)"/>
-
-    <Button
-        android:id="@+id/btn_downloader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="File Download"/>
-
+        android:text="Download"
+        tools:layout_editor_absoluteX="142dp"
+        tools:layout_editor_absoluteY="149dp" />
 </LinearLayout>

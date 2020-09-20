@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.aar.androidstorage.download.DownloadActivity
 import com.aar.androidstorage.writetofile.WriteToFileActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity() {
                 putExtra(WriteToFileActivity.EXTRA_MODE, WriteToFileActivity.MODE_CUSTOM_TOP_LEVEL_DIR)
                 startActivity(this)
             }
+        }
+
+        btn_downloader.setOnClickListener {
+            startActivity(Intent(this, DownloadActivity::class.java))
         }
     }
 

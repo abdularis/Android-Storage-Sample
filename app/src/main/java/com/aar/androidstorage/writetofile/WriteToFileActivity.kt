@@ -59,6 +59,14 @@ class WriteToFileActivity : AppCompatActivity() {
             val result = doQueryMediaStore()
             text_query_result.text = "result: ${result.size}\n0: ${result.firstOrNull()}"
         }
+
+        btn_delete.setOnClickListener {
+            if (File(topLevelDir, sampleFileName).delete()) {
+                Toast.makeText(this, "File deleted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Failed to delete file", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun writeFileContentBitmap(fileName: String): String? {
@@ -120,5 +128,5 @@ class WriteToFileActivity : AppCompatActivity() {
         }
 
     private val sampleFileName: String
-        get() = "sample_bitmap_file-${BuildConfig.FLAVOR_sdkVersion}_${BuildConfig.FLAVOR_legacyStorageFlag}.jpg"
+        get() = "sample_bitmap_${BuildConfig.FLAVOR_sdkVersion}_${BuildConfig.FLAVOR_legacyStorageFlag}.jpg"
 }

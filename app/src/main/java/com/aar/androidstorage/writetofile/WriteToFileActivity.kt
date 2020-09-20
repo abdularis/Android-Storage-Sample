@@ -2,6 +2,7 @@ package com.aar.androidstorage.writetofile
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -67,6 +68,13 @@ class WriteToFileActivity : AppCompatActivity() {
                 Toast.makeText(this, "Failed to delete file", Toast.LENGTH_SHORT).show()
             }
         }
+
+        btn_delete_for_r.setOnClickListener {
+            findUriFromPath(File(topLevelDir, sampleFileName).absolutePath)?.let {
+                val delReq = MediaStore.createDeleteRequest(contentResolver, listOf(it))
+                startIntentSenderForResult(delReq.intentSender, 1030, null, 0, 0, 0)
+            }
+        }
     }
 
     private fun writeFileContentBitmap(fileName: String): String? {
@@ -116,6 +124,26 @@ class WriteToFileActivity : AppCompatActivity() {
         }
 
         return result
+    }
+
+    private fun findUriFromPath(path: String): Uri? {
+        val proj = arrayOf(
+            MediaStore.Files.FileColumns._ID,
+            MediaStore.Files.FileColumns.DATA
+        )
+
+        val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val selection = "${MediaStore.Files.FileColumns.DATA}=?"
+        val selArgs = arrayOf(path)
+
+        return contentResolver.query(uri, proj, selection, selArgs, null)?.use {
+            while (it.moveToNext()) {
+                if (path == it.getString(1)) {
+                    return@use Uri.withAppendedPath(uri, it.getInt(0).toString())
+                }
+            }
+            return null
+        }
     }
 
     private val topLevelDir: File

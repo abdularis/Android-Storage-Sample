@@ -83,5 +83,12 @@
             android:layout_margin="16dp"
             android:text="Delete File"/>
 
+        <Button
+            android:id="@+id/btn_delete_for_r"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="Delete File (For Android 11/R)"/>
+
     </LinearLayout>
 </ScrollView>

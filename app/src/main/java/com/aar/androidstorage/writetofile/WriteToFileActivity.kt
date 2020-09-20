@@ -8,13 +8,9 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
-import com.aar.androidstorage.R
-import com.aar.androidstorage.asFormattedDate
-import com.aar.androidstorage.askStoragePermission
-import com.aar.androidstorage.isStoragePermissionGranted
+import com.aar.androidstorage.*
 import kotlinx.android.synthetic.main.activity_write_to_file.*
 import java.io.*
-import java.sql.Date
 
 class WriteToFileActivity : AppCompatActivity() {
 
@@ -37,11 +33,12 @@ class WriteToFileActivity : AppCompatActivity() {
             askStoragePermission()
         }
 
-        text_info.text = "Save this image into: ${topLevelDir.absolutePath}"
+        text_info.text = "Sample file name: ${sampleFileName}\n" +
+                "Save this image into: ${topLevelDir.absolutePath}"
 
         btn_save.setOnClickListener {
             try {
-                var path = writeFileContentBitmap("write_bitmap_sample.jpg")
+                val path = writeFileContentBitmap(sampleFileName)
                 text_result.text = "Success, $path"
             } catch (e: Exception) {
                 text_result.text = "Failed: $e"
@@ -50,7 +47,7 @@ class WriteToFileActivity : AppCompatActivity() {
 
         btn_read.setOnClickListener {
             try {
-                val fileBitmap = readFileContent("write_bitmap_sample.jpg")
+                val fileBitmap = readFileContent(sampleFileName)
                 img_result.setImageBitmap(fileBitmap.second)
                 text_file.text = "modified: ${fileBitmap.first.lastModified().asFormattedDate()}"
             } catch (e: Exception) {
@@ -97,7 +94,7 @@ class WriteToFileActivity : AppCompatActivity() {
 
         val uri = MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
         val selection = "${MediaStore.Files.FileColumns.DISPLAY_NAME}=?"
-        val selArgs = arrayOf("write_bitmap_sample.jpg")
+        val selArgs = arrayOf(sampleFileName)
 
         val result = arrayListOf<String>()
         contentResolver.query(uri, proj, selection, selArgs, null)?.use {
@@ -121,4 +118,7 @@ class WriteToFileActivity : AppCompatActivity() {
                 Environment.getExternalStoragePublicDirectory("APP_SAMPLE_DIR")
             }
         }
+
+    private val sampleFileName: String
+        get() = "sample_bitmap_file-${BuildConfig.FLAVOR_sdkVersion}_${BuildConfig.FLAVOR_legacyStorageFlag}.jpg"
 }

@@ -1,11 +1,13 @@
 package com.aar.androidstorage
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.aar.androidstorage.download.DownloadActivity
+import com.aar.androidstorage.image.ImageActivity
 import com.aar.androidstorage.writetofile.WriteToFileActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -35,6 +37,25 @@ class MainActivity : AppCompatActivity() {
         btn_downloader.setOnClickListener {
             startActivity(Intent(this, DownloadActivity::class.java))
         }
+
+        btn_pick_image.setOnClickListener {
+            showOpenDocumentPicker(
+                mimeType = "image/*",
+                requestCode = 11
+            )
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 11 && resultCode == Activity.RESULT_OK) {
+            data?.data?.let {
+                Intent(this, ImageActivity::class.java).apply {
+                    setData(it)
+                    startActivity(this)
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun getTargetSdkVersion(): Int {

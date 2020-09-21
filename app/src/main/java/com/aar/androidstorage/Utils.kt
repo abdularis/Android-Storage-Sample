@@ -3,6 +3,7 @@ package com.aar.androidstorage
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,4 +29,16 @@ fun Context.isStoragePermissionGranted(): Boolean {
 fun Long.asFormattedDate(): String {
     val formatter = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
     return formatter.format(Date(this))
+}
+
+fun Activity.showOpenDocumentPicker(
+    mimeType: String = "*/*",
+    requestCode: Int
+) {
+    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+        type = mimeType
+        addCategory(Intent.CATEGORY_OPENABLE)
+    }
+
+    startActivityForResult(intent, requestCode)
 }
